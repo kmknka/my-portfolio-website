@@ -1,4 +1,7 @@
 import type { LinksFunction } from "@remix-run/cloudflare";
+import Header from "~/components/Header";
+import TabNavigation from "~/components/TabNavigation";
+
 import {
   Links,
   Meta,
@@ -19,6 +22,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <Header />
+        <div className="hidden md:block">
+          <TabNavigation />
+        </div>
         {children}
         <ScrollRestoration />
         <Scripts />
