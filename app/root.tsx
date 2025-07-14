@@ -1,6 +1,6 @@
-import type { LinksFunction } from "@remix-run/cloudflare";
 import Header from "~/components/Header";
 import TabNavigation from "~/components/TabNavigation";
+import Sidebar from "./components/Sidebar";
 
 import {
   Links,
@@ -21,12 +21,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="min-h-screen bg-brand-background">
+        {/* ヘッダー */}
         <Header />
-        <div className="hidden md:block">
+        {/* タブナビゲーション（モバイルでは非表示） */}
+        <div className="hidden md:block bg-white font-body">
           <TabNavigation />
         </div>
-        {children}
+        <div className="w-full max-w-screen-lg mx-auto flex flex-row gap-6 px-4 py-6 overflow-y-auto font-body">
+          {/* ページごとのコンテンツ */}
+          <main className="flex-1 font-body">{children}</main>
+          {/* サイドバー（モバイルでは非表示） */}
+          <aside className="hidden md:block font-body">
+            <Sidebar />
+          </aside>
+        </div>
+
         <ScrollRestoration />
         <Scripts />
       </body>
