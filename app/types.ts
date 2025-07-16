@@ -26,5 +26,7 @@ export type Blog = {
     height: number;
   };
   category: Category;
-  summary?: string;
+  subcategories: Category;
+  tags: Category[];
+  summary: string;
 };

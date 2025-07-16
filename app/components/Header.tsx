@@ -1,3 +1,4 @@
+// app/components/Header.tsx
 import { useState, useRef, useEffect } from "react";
 import { Link } from "@remix-run/react";
 import {

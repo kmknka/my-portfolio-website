@@ -14,18 +14,56 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+
+  const categoryParam = url.searchParams.get("category"); // 大分類
+  const subcategoryParam = url.searchParams.get("subcategory"); // 中分類
+  const tagParam = url.searchParams.get("tag"); // タグ
+
   const res = await getBlogs({
     offset: 0,
-    limit: PER_PAGE,
+    limit: 100,
     orders: "-publishedAt",
-    fields: ["id", "title", "publishedAt", "eyecatch", "category", "summary"],
+    fields: [
+      "id",
+      "title",
+      "publishedAt",
+      "eyecatch",
+      "category",
+      "subcategories",
+      "tags",
+      "summary",
+    ],
   });
 
+  let filtered = res.contents;
+
+  if (categoryParam) {
+    filtered = filtered.filter((blog) => blog.category?.name === categoryParam);
+  }
+
+  if (subcategoryParam) {
+    filtered = filtered.filter(
+      (blog) => blog.subcategories?.name === subcategoryParam
+    );
+  }
+
+  if (tagParam) {
+    filtered = filtered.filter((blog) =>
+      blog.tags?.some((tag) => tag.name === tagParam)
+    );
+  }
+
+  // ページネーション処理
+  const totalCount = filtered.length;
+  const currentPage = 1;
+  const paginated = filtered.slice(0, PER_PAGE);
+
   return {
-    contents: res.contents,
-    totalCount: res.totalCount,
-    currentPage: 1,
+    contents: paginated,
+    totalCount: totalCount,
+    currentPage: currentPage,
   };
 };
 
@@ -35,7 +73,6 @@ export default function Index() {
     totalCount: number;
     currentPage: number;
   }>();
-  console.log("Index contents:", contents);
   return (
     <BlogPagination
       contents={contents}

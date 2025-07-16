@@ -13,25 +13,61 @@ export const meta: MetaFunction = ({ params }) => {
   ];
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   const currentPage = parseInt(params.page || "1", 10);
   const perPage = 10;
   const offset = (currentPage - 1) * perPage;
+  const url = new URL(request.url);
+  const categoryParam = url.searchParams.get("category");
+  const subcategoryParam = url.searchParams.get("subcategory");
+  const tagParam = url.searchParams.get("tag");
 
-  const allblogdata = await getBlogs({
-    fields: ["id", "title", "publishedAt", "revisedAt", "eyecatch", "category"],
+  // ブログデータ取得
+  const res = await getBlogs({
+    fields: [
+      "id",
+      "title",
+      "publishedAt",
+      "revisedAt",
+      "eyecatch",
+      "category",
+      "subcategories",
+      "tags",
+      "summary",
+    ],
     orders: "-publishedAt",
-    offset,
-    limit: perPage,
+    offset: 0,
+    limit: 100,
   });
 
-  if (!allblogdata) {
+  if (!res) {
     throw new Response("Not Found", { status: 404 });
   }
 
+  let filtered = res.contents;
+
+  if (categoryParam) {
+    filtered = filtered.filter((blog) => blog.category?.name === categoryParam);
+  }
+
+  if (subcategoryParam) {
+    filtered = filtered.filter(
+      (blog) => blog.subcategories?.name === subcategoryParam
+    );
+  }
+
+  if (tagParam) {
+    filtered = filtered.filter((blog) =>
+      blog.tags?.some((tag) => tag.name === tagParam)
+    );
+  }
+
+  // ページネーション用にslice
+  const paged = filtered.slice(offset, offset + perPage);
+
   return {
-    contents: allblogdata.contents,
-    totalCount: allblogdata.totalCount,
+    contents: paged,
+    totalCount: filtered.length,
     currentPage: currentPage,
     perPage,
   };

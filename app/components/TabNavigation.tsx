@@ -1,10 +1,19 @@
+//app/components/TabNavigation.tsx
 import { Link, useLocation } from "@remix-run/react";
 
 const tabs = [
-  { name: "つかえる無料ツール集", path: "/tools", disabled: false },
-  { name: "つくってみたログ", path: "/logs", disabled: false },
-  { name: "つまずきと発見の記録", path: "/tips", disabled: false },
-  { name: "社内SEの現場メモ", path: "/it-memo", disabled: false },
+  {
+    name: "つかえる無料ツール集",
+    category: "つかえる無料ツール集",
+    disabled: false,
+  },
+  { name: "つくってみたログ", category: "つくってみたログ", disabled: false },
+  {
+    name: "つまずきと発見の記録",
+    category: "つまずきと発見の記録",
+    disabled: false,
+  },
+  { name: "社内SEの現場メモ", category: "社内SEの現場メモ", disabled: false },
   { name: "お問い合わせ", path: "/contact", disabled: false },
 ];
 
@@ -15,7 +24,11 @@ export default function TabNavigation() {
     <div className="font-body text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
       <ul className="flex flex-wrap justify-center -mb-px space-x-2 md:space-x-4">
         {tabs.map((tab) => {
-          const isActive = location.pathname === tab.path;
+          const to =
+            tab.path ?? `/?category=${encodeURIComponent(tab.category!)}`;
+          const isActive = tab.path
+            ? location.pathname === tab.path
+            : location.search.includes(`category=${tab.category}`);
 
           return (
             <li className="me-2" key={tab.name}>
@@ -25,7 +38,7 @@ export default function TabNavigation() {
                 </span>
               ) : (
                 <Link
-                  to={tab.path}
+                  to={to}
                   className={`inline-block p-4 border-b-2 rounded-t-lg ${
                     isActive
                       ? "text-blue-600 border-blue-600 dark:text-blue-500 dark:border-blue-500"
