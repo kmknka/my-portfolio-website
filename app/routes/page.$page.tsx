@@ -1,7 +1,7 @@
 // app/routes/page/$page.tsx
 
 import type { LoaderFunction, MetaFunction } from "@remix-run/cloudflare";
-import { redirect, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { getBlogs } from "~/libs/microcms";
 import type { Blog } from "~/types";
 import BlogPagination from "~/components/BlogPagination";

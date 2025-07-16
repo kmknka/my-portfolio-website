@@ -1,5 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "@remix-run/react";
+import {
+  HiUser,
+  HiMiniBolt,
+  HiWrenchScrewdriver,
+  HiLightBulb,
+  HiDocumentText,
+  HiEnvelope,
+} from "react-icons/hi2";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,47 +77,49 @@ export default function Header() {
           {isOpen && (
             <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 dark:bg-neutral-800 dark:border-neutral-600">
               <a
-                href="/"
-                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
-              >
-                Home
-              </a>
-              <a
-                href="/downloads"
-                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
-              >
-                Downloads
-              </a>
-              <a
                 href="/about"
                 className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
               >
-                About
+                <HiUser className="inline-block mr-2" />
+                わたしについて
+              </a>
+              <a
+                href="/tools"
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
+              >
+                <HiMiniBolt className="inline-block mr-2" />
+                つかえる無料ツール集
+              </a>
+              <a
+                href="/logs"
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
+              >
+                <HiWrenchScrewdriver className="inline-block mr-2" />
+                つくってみたログ
+              </a>
+              <a
+                href="/tips"
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
+              >
+                <HiLightBulb className="inline-block mr-2" />
+                つまずきと発見の記録
+              </a>
+              <a
+                href="/it-memo"
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
+              >
+                <HiDocumentText className="inline-block mr-2" />
+                社内SEの現場メモ
+              </a>
+              <a
+                href="/contact"
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
+              >
+                <HiEnvelope className="inline-block mr-2" />
+                お問い合わせ
               </a>
             </div>
           )}
-        </div>
-
-        {/* PC時のメニュー */}
-        <div className="hidden md:flex gap-6">
-          <Link
-            to={"/"}
-            className="text-sm text-white dark:text-white hover:text-gray-200 duration-200"
-          >
-            Home
-          </Link>
-          <Link
-            to={"/downloads"}
-            className="text-sm text-white dark:text-white hover:text-gray-200 duration-200"
-          >
-            Downloads
-          </Link>
-          <Link
-            to={"/about"}
-            className="text-sm text-white dark:text-white hover:text-gray-200 duration-200"
-          >
-            About
-          </Link>
         </div>
       </nav>
     </header>

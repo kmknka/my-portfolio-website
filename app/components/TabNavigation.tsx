@@ -1,11 +1,11 @@
 import { Link, useLocation } from "@remix-run/react";
 
 const tabs = [
-  { name: "Profile", path: "/profile" },
-  { name: "Dashboard", path: "/dashboard" },
-  { name: "Settings", path: "/settings" },
-  { name: "Contacts", path: "/contacts" },
-  // { name: "Disabled", path: "#", disabled: true },
+  { name: "つかえる無料ツール集", path: "/tools", disabled: false },
+  { name: "つくってみたログ", path: "/logs", disabled: false },
+  { name: "つまずきと発見の記録", path: "/tips", disabled: false },
+  { name: "社内SEの現場メモ", path: "/it-memo", disabled: false },
+  { name: "お問い合わせ", path: "/contact", disabled: false },
 ];
 
 export default function TabNavigation() {
