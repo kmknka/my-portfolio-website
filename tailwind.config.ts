@@ -44,5 +44,5 @@ export default {
       },
     },
   },
-  plugins: [lineClamp],
+  plugins: [],
 } satisfies Config;

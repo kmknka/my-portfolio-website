@@ -29,4 +29,5 @@ export type Blog = {
   subcategories: Category;
   tags: Category[];
   summary: string;
+  showSummary: boolean;
 };

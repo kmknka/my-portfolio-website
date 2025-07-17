@@ -73,6 +73,7 @@ export default function Index() {
     totalCount: number;
     currentPage: number;
   }>();
+
   return (
     <BlogPagination
       contents={contents}
