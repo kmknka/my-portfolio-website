@@ -1,6 +1,6 @@
 // app/components/Header.tsx
 import { useState, useRef, useEffect } from "react";
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import {
   HiUser,
   HiMiniBolt,
@@ -11,6 +11,83 @@ import {
 } from "react-icons/hi2";
 
 export default function Header() {
+  const tabs = [
+    {
+      name: "わたしについて",
+      path: "/about",
+      disabled: false,
+      logo: (isActive: boolean) => (
+        <HiUser
+          className={`inline-block mr-2 ${
+            isActive ? "text-blue-500" : "text-gray-500"
+          }`}
+        />
+      ),
+    },
+    {
+      name: "つかえる無料ツール集",
+      category: "つかえる無料ツール集",
+      disabled: false,
+      logo: (isActive: boolean) => (
+        <HiMiniBolt
+          className={`inline-block mr-2 ${
+            isActive ? "text-blue-500" : "text-gray-500"
+          }`}
+        />
+      ),
+    },
+    {
+      name: "つくってみたログ",
+      category: "つくってみたログ",
+      disabled: false,
+      logo: (isActive: boolean) => (
+        <HiDocumentText
+          className={`inline-block mr-2 ${
+            isActive ? "text-blue-500" : "text-gray-500"
+          }`}
+        />
+      ),
+    },
+    {
+      name: "つまずきと発見の記録",
+      category: "つまずきと発見の記録",
+      disabled: false,
+      logo: (isActive: boolean) => (
+        <HiLightBulb
+          className={`inline-block mr-2 ${
+            isActive ? "text-blue-500" : "text-gray-500"
+          }`}
+        />
+      ),
+    },
+    {
+      name: "社内SEの現場メモ",
+      category: "社内SEの現場メモ",
+      disabled: false,
+      logo: (isActive: boolean) => (
+        <HiWrenchScrewdriver
+          className={`inline-block mr-2 ${
+            isActive ? "text-blue-500" : "text-gray-500"
+          }`}
+        />
+      ),
+    },
+    {
+      name: "お問い合わせ",
+      path: "/contact",
+      disabled: false,
+      logo: (isActive: boolean) => (
+        <HiEnvelope
+          className={`inline-block mr-2 ${
+            isActive ? "text-blue-500" : "text-gray-500"
+          }`}
+        />
+      ),
+    },
+  ];
+  const location = useLocation();
+  const url = new URL(location.pathname + location.search, "https://dummy.com");
+  const categoryParam = url.searchParams.get("category");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -77,48 +154,27 @@ export default function Header() {
           {/* ドロップダウンメニュー（オーバーレイ） */}
           {isOpen && (
             <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 dark:bg-neutral-800 dark:border-neutral-600">
-              <a
-                href="/about"
-                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
-              >
-                <HiUser className="inline-block mr-2" />
-                わたしについて
-              </a>
-              <a
-                href="/tools"
-                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
-              >
-                <HiMiniBolt className="inline-block mr-2" />
-                つかえる無料ツール集
-              </a>
-              <a
-                href="/logs"
-                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
-              >
-                <HiWrenchScrewdriver className="inline-block mr-2" />
-                つくってみたログ
-              </a>
-              <a
-                href="/tips"
-                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
-              >
-                <HiLightBulb className="inline-block mr-2" />
-                つまずきと発見の記録
-              </a>
-              <a
-                href="/it-memo"
-                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
-              >
-                <HiDocumentText className="inline-block mr-2" />
-                社内SEの現場メモ
-              </a>
-              <a
-                href="/contact"
-                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
-              >
-                <HiEnvelope className="inline-block mr-2" />
-                お問い合わせ
-              </a>
+              {tabs.map((tab) => {
+                const to =
+                  tab.path ?? `/?category=${encodeURIComponent(tab.category!)}`;
+                const isActive = categoryParam === tab.category;
+
+                return (
+                  <Link
+                    key={tab.name}
+                    to={to}
+                    className={`flex items-center w-full px-4 py-2 text-sm rounded ${
+                      isActive
+                        ? "bg-gray-300 text-gray-800 pointer-events-none"
+                        : "text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
+                    }`}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {tab.logo(isActive)}
+                    {tab.name}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>

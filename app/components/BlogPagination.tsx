@@ -3,7 +3,7 @@
 import { Link } from "@remix-run/react";
 import type { Blog } from "~/types";
 import PaginationButtons from "./PaginationButtons";
-import { FaClock } from "react-icons/fa";
+import { FaClock, FaTag } from "react-icons/fa";
 import FilterLinks from "./FilterLinks";
 
 interface Props {
@@ -19,9 +19,10 @@ const BlogPagination = ({
   currentPage,
   perPage = 10,
 }: Props) => {
+  console.log("BlogPagination contents:", contents);
   return (
     <>
-      <div className="w-full max-w-screen-lg mx-auto px-4 py-6">
+      <div className="w-full max-w-screen-lg mx-auto px-4 py-2">
         {/* フィルターリンク */}
         <FilterLinks contents={contents} />
       </div>
@@ -35,15 +36,24 @@ const BlogPagination = ({
               className="bg-white rounded-lg shadow p-4 flex gap-4 items-start hover:shadow-lg transition-shadow duration-200"
             >
               {/* 左: アイキャッチ画像＋カテゴリ */}
-              <div className="relative w-32 h-24 md:w-48 md:h-36">
+              <div className="relative w-32 h-24 md:w-48 md:h-36 flex flex-col items-start">
                 <img
                   src={blog.eyecatch.url}
                   alt={blog.title}
                   className="w-full h-full object-contain rounded"
                 />
+                {/* カテゴリ名表示 */}
                 {blog.category?.name && (
-                  <span className="absolute top-2 left-2 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                  // モバイル表示時: カテゴリを画像の下に表示
+                  <span className="text-[10px] sm:text-xs bg-brand-primary text-white font-semibold my-1 px-2 py-1 rounded w-fit">
                     {blog.category.name}
+                  </span>
+                )}
+                {/* サブカテゴリ名表示 */}
+                {blog.subcategories?.name && (
+                  // 画像の下に表示
+                  <span className="text-[10px] sm:text-xs bg-gray-400 text-white font-semibold mb-1 px-2 py-1 rounded w-fit">
+                    {blog.subcategories.name}
                   </span>
                 )}
               </div>
@@ -56,6 +66,20 @@ const BlogPagination = ({
                 <p className="text-sm text-gray-600 line-clamp-3 mb-2 px-2 min-h-[6em]">
                   {blog.summary || "\u00A0"}
                 </p>
+                {/* タグ一覧表示 */}
+                {blog.tags && blog.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {blog.tags.map((tag) => (
+                      <span
+                        key={tag.id}
+                        className="inline-flex items-center gap-1 text-[10px] sm:text-xs bg-gray-100 text-gray-800 font-medium px-2 py-0.5 rounded"
+                      >
+                        <FaTag className="w-3 h-3 text-gray-500" />
+                        {tag.name}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 {/* 公開日＋時計アイコン */}
                 <div className="text-right text-sm text-gray-500 flex items-center justify-end gap-1">
                   <FaClock className="w-4 h-4" />

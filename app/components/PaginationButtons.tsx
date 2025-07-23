@@ -39,8 +39,8 @@ const PaginationButtons = ({ totalCount, currentPage, perPage }: Props) => {
           to={href}
           className={`px-3 py-1 border rounded text-sm ${
             isActive
-              ? "bg-blue-600 text-white"
-              : "bg-white text-blue-600 hover:bg-blue-100"
+              ? "bg-brand-secondary text-gray-800 pointer-events-none"
+              : "bg-white text-gray-800 hover:bg-yellow-100"
           }`}
         >
           {page}
