@@ -5,6 +5,7 @@ import type { Blog } from "~/types";
 import PaginationButtons from "./PaginationButtons";
 import { FaClock, FaTag } from "react-icons/fa";
 import FilterLinks from "./FilterLinks";
+import CategoryBreadcrumb from "./CategoryBreadcrumb";
 
 interface Props {
   contents: Blog[];
@@ -19,12 +20,16 @@ const BlogPagination = ({
   currentPage,
   perPage = 10,
 }: Props) => {
-  console.log("BlogPagination contents:", contents);
+  // console.log("BlogPagination contents:", contents);
   return (
     <>
-      <div className="w-full max-w-screen-lg mx-auto px-4 py-2">
+      <div className="w-full max-w-screen-lg mx-auto py-2">
         {/* フィルターリンク */}
         <FilterLinks contents={contents} />
+      </div>
+      <div className="hidden md:block w-full max-w-screen-lg mx-auto py-2">
+        {/* カテゴリーブレッドクラム（PC表示用 フィルターリンク下部に表示） */}
+        <CategoryBreadcrumb />
       </div>
       <div className="space-y-4">
         {/* 記事一覧箇所 */}
@@ -44,7 +49,7 @@ const BlogPagination = ({
                 />
                 {/* カテゴリ名表示 */}
                 {blog.category?.name && (
-                  // モバイル表示時: カテゴリを画像の下に表示
+                  // カテゴリを画像の下に表示
                   <span className="text-[10px] sm:text-xs bg-brand-primary text-white font-semibold my-1 px-2 py-1 rounded w-fit">
                     {blog.category.name}
                   </span>
@@ -81,8 +86,8 @@ const BlogPagination = ({
                   </div>
                 )}
                 {/* 公開日＋時計アイコン */}
-                <div className="text-right text-sm text-gray-500 flex items-center justify-end gap-1">
-                  <FaClock className="w-4 h-4" />
+                <div className="text-right text-xs text-gray-500 flex items-center justify-end gap-1">
+                  <FaClock className="inline-block" />
                   <span>
                     {new Date(blog.publishedAt)
                       .toLocaleDateString("ja-JP", {
@@ -96,6 +101,11 @@ const BlogPagination = ({
               </div>
             </Link>
           ))}
+        </div>
+
+        <div className="md:hidden w-full max-w-screen-lg mx-auto py-2">
+          {/* カテゴリーブレッドクラム（モバイル表示用 ページ下部表示） */}
+          <CategoryBreadcrumb />
         </div>
 
         {/* ページネーションボタン */}
