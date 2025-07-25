@@ -1,6 +1,10 @@
 import { createClient, MicroCMSQueries } from "microcms-js-sdk";
 import type { Blog } from "~/types";
 import { JSDOM } from "jsdom";
+type tagList = {
+  name: string;
+  count: number;
+};
 
 export const client = createClient({
   serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || "", // service-domain は https://XXXX.microcms.io の XXXX 部分
@@ -20,6 +24,32 @@ export const getBlogDetail = async (
     contentId: blogId,
     queries,
   });
+};
+
+export const getTagList = async (): Promise<tagList[]> => {
+  const res = await getBlogs({
+    offset: 0,
+    limit: 100,
+    fields: ["tags"],
+  });
+
+  const tagCountMap: Record<string, number> = {};
+  res.contents.forEach((blog) => {
+    blog.tags?.forEach((tag) => {
+      if (tag.name in tagCountMap) {
+        tagCountMap[tag.name]++;
+      } else {
+        tagCountMap[tag.name] = 1;
+      }
+    });
+  });
+
+  const tagList = Object.entries(tagCountMap).map(([name, count]) => ({
+    name,
+    count,
+  }));
+
+  return tagList;
 };
 
 /*content内のhtmlとricheditor配列を結合 */

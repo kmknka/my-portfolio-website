@@ -2,7 +2,7 @@
 
 import type { LoaderFunction, MetaFunction } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import { getBlogs } from "~/libs/microcms";
+import { getBlogs, getTagList } from "~/libs/microcms";
 import type { Blog } from "~/types";
 import BlogPagination from "~/components/BlogPagination";
 import Sidebar from "~/components/Sidebar";
@@ -49,23 +49,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     throw new Response("Not Found", { status: 404 });
   }
 
-  // タグ件数カウント
-  const tagCountMap: Record<string, number> = {};
-  res.contents.forEach((blog) => {
-    blog.tags?.forEach((tag) => {
-      if (tag.name in tagCountMap) {
-        tagCountMap[tag.name]++;
-      } else {
-        tagCountMap[tag.name] = 1;
-      }
-    });
-  });
-
-  // タグ名:件数のリストを定義
-  const tagList = Object.entries(tagCountMap).map(([name, count]) => ({
-    name,
-    count,
-  }));
+  const tagList = await getTagList();
 
   let filtered = res.contents;
 

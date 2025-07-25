@@ -31,3 +31,15 @@ export type Blog = {
   summary: string;
   showSummary: boolean;
 };
+
+export type Contacts = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  revisedAt: string;
+  name: string;
+  email: string;
+  title: string;
+  message: string;
+};

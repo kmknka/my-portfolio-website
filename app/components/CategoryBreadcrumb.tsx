@@ -9,6 +9,24 @@ export default function CategoryBreadcrumb() {
   const category = url.get("category");
   const subcategory = url.get("subcategory");
 
+  // パスが /contact のとき
+  if (location.pathname === "/contact") {
+    return (
+      <nav className="text-sm text-gray-600 mb-4 px-4">
+        <ol className="list-reset flex flex-wrap items-center space-x-2">
+          <li>
+            <Link to="/" className="hover:text-gray-400 duration-200">
+              <FaHome className="inline-block mr-1" />
+              Home
+            </Link>
+          </li>
+          <li>&gt;</li>
+          <li>お問い合わせ</li>
+        </ol>
+      </nav>
+    );
+  }
+
   // ルートパスかつクエリなしなら非表示
   const isHome = location.pathname === "/" && !category && !subcategory;
   if (isHome) return null;

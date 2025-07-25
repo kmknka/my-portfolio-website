@@ -16,22 +16,24 @@ export default function FilterLinks({ contents }: Props) {
 
   // subcategoriesの状態（初期値は空）
   const [subcategories, setSubcategories] = useState<string[]>([]);
-  const [prevCategory, setPrevCategory] = useState<string | null>(null);
 
-  // categoryが変更されたときにsubcategoriesを更新
+  // categoryParamまたはcontentsが変化したら毎回更新
   useEffect(() => {
-    if (!categoryParam) return;
-
-    if (categoryParam !== prevCategory) {
-      const set = new Set(
-        contents
-          .map((blog) => blog.subcategories?.name)
-          .filter((name): name is string => typeof name === "string")
-      );
-      setSubcategories(Array.from(set));
-      setPrevCategory(categoryParam);
+    if (!categoryParam) {
+      setSubcategories([]);
+      return;
     }
-  }, [categoryParam, prevCategory, contents]);
+
+    const set = new Set(
+      contents
+        .filter((blog) => blog.category?.name === categoryParam) // ←カテゴリに一致するものだけ
+        .map((blog) => blog.subcategories?.name)
+        .filter((name): name is string => typeof name === "string")
+    );
+    setSubcategories(Array.from(set));
+  }, [categoryParam, contents]);
+
+  console.log("subcategories:", subcategories);
 
   // パスが "/" かつ category が無い場合は非表示
   if (location.pathname === "/" && !categoryParam) {
