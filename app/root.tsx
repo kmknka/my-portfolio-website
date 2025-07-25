@@ -1,6 +1,6 @@
+// app/root.tsx
 import Header from "~/components/Header";
 import TabNavigation from "~/components/TabNavigation";
-import Sidebar from "./components/Sidebar";
 
 import {
   Links,
@@ -21,22 +21,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="min-h-screen bg-brand-background">
+      <body className="min-h-screen">
         {/* ヘッダー */}
         <Header />
+        {/* モバイル表示時のみ余白を追加 */}
+        <div className="mt-14 md:mt-0" />
         {/* タブナビゲーション（モバイルでは非表示） */}
         <div className="hidden md:block bg-white font-body">
           <TabNavigation />
         </div>
-        <div className="w-full max-w-screen-lg mx-auto flex flex-row gap-6 px-4 py-6 overflow-y-auto font-body">
-          {/* ページごとのコンテンツ */}
-          <main className="flex-1 font-body">{children}</main>
-          {/* サイドバー（モバイルでは非表示） */}
-          <aside className="hidden md:block font-body">
-            <Sidebar />
-          </aside>
-        </div>
-
+        {/* メインコンテンツ (記事情報及びサイドバー)*/}
+        <main>{children}</main>
         <ScrollRestoration />
         <Scripts />
       </body>

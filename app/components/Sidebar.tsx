@@ -1,20 +1,13 @@
 // components/Sidebar.tsx
-import { FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaTwitter, FaYoutube, FaTag } from "react-icons/fa";
+import { Link } from "@remix-run/react";
+interface SidebarProps {
+  tagList?: { name: string; count: number }[];
+}
 
-export default function Sidebar() {
+export default function Sidebar({ tagList }: SidebarProps) {
   return (
-    <aside className="w-64 space-y-4">
-      {/* 広告スペース */}
-      <section>
-        <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg shadow border border-gray-200 dark:border-neutral-700">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-            スポンサー
-          </h2>
-          <div className="bg-gray-100 dark:bg-neutral-700 h-32 flex items-center justify-center text-sm text-gray-500 dark:text-gray-300 rounded">
-            広告スペース
-          </div>
-        </div>
-      </section>
+    <aside className="md:w-64 space-y-4">
       {/* 自己紹介セクション */}
       <section>
         <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg shadow border border-gray-200 dark:border-neutral-700">
@@ -80,34 +73,31 @@ export default function Sidebar() {
       <section>
         <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg shadow border border-gray-200 dark:border-neutral-700">
           <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-            記事タグ
+            タグ一覧
           </h2>
-          <ul className="space-y-2">
-            <li>
-              <a
-                href="/tags/web-development"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                Web開発
-              </a>
-            </li>
-            <li>
-              <a
-                href="/tags/design"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                デザイン
-              </a>
-            </li>
-            <li>
-              <a
-                href="/tags/ux-ui"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                UX/UI
-              </a>
-            </li>
-          </ul>
+          {/* タグリスト */}
+          {tagList && tagList.length > 0 ? (
+            <div className="flex flex-wrap gap-1 mt-1">
+              {tagList.map((tag) => (
+                <div
+                  key={tag.name}
+                  className="inline-flex items-center gap-1 text-[10px] sm:text-xs bg-gray-100 text-gray-800 font-medium px-2 py-0.5 rounded hover:bg-gray-300 hover:shadow-lg transition-shadow duration-500"
+                >
+                  <Link
+                    key={tag.name}
+                    to={`/?tag=${encodeURIComponent(tag.name)}`}
+                    className="flex items-center gap-1"
+                  >
+                    <FaTag className="w-3 h-3 text-gray-500" />
+                    {tag.name}
+                    <div className="ml-1">({tag.count})</div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 dark:text-gray-400">タグはありません</p>
+          )}
         </div>
       </section>
     </aside>

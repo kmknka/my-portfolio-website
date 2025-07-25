@@ -6,12 +6,14 @@ import PaginationButtons from "./PaginationButtons";
 import { FaClock, FaTag } from "react-icons/fa";
 import FilterLinks from "./FilterLinks";
 import CategoryBreadcrumb from "./CategoryBreadcrumb";
+import Sidebar from "./Sidebar";
 
 interface Props {
   contents: Blog[];
   totalCount: number;
   currentPage: number;
   perPage?: number;
+  tagList?: { name: string; count: number }[];
 }
 
 const BlogPagination = ({
@@ -19,6 +21,7 @@ const BlogPagination = ({
   totalCount,
   currentPage,
   perPage = 10,
+  tagList,
 }: Props) => {
   // console.log("BlogPagination contents:", contents);
   return (
@@ -101,6 +104,11 @@ const BlogPagination = ({
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* サイドバー表示(モバイル表示の時は、記事情報下部に表示) */}
+        <div className="md:hidden w-full max-w-screen-lg mx-auto py-2">
+          <Sidebar tagList={tagList} />
         </div>
 
         <div className="md:hidden w-full max-w-screen-lg mx-auto py-2">

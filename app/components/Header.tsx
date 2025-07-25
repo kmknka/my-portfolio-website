@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "@remix-run/react";
 import {
-  HiUser,
   HiMiniBolt,
   HiWrenchScrewdriver,
   HiLightBulb,
@@ -12,18 +11,6 @@ import {
 
 export default function Header() {
   const tabs = [
-    {
-      name: "わたしについて",
-      path: "/about",
-      disabled: false,
-      logo: (isActive: boolean) => (
-        <HiUser
-          className={`inline-block mr-2 ${
-            isActive ? "text-blue-500" : "text-gray-500"
-          }`}
-        />
-      ),
-    },
     {
       name: "つかえる無料ツール集",
       category: "つかえる無料ツール集",
@@ -85,11 +72,45 @@ export default function Header() {
       ),
     },
   ];
+
   const location = useLocation();
   const url = new URL(location.pathname + location.search, "https://dummy.com");
   const categoryParam = url.searchParams.get("category");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // ウィンドウサイズの変更を監視してモバイル判定
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // スクロールイベントでヘッダーの表示/非表示を制御
+  useEffect(() => {
+    if (!isMobile) {
+      setShowHeader(true);
+      return;
+    }
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      if (currentY > lastScrollY && currentY > 50) {
+        setShowHeader(false);
+      } else {
+        setShowHeader(true);
+      }
+      setLastScrollY(currentY);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobile, lastScrollY]);
 
   // メニュー外クリックで閉じる
   useEffect(() => {
@@ -110,15 +131,35 @@ export default function Header() {
   }, [isOpen]);
 
   return (
-    <header className="relative z-50 w-full bg-brand-primary border-b border-gray-200 dark:bg-neutral-800 dark:border-neutral-700">
+    <header
+      className={`
+        ${
+          isMobile
+            ? "fixed top-0 left-0 z-50 transition-transform duration-300 w-full"
+            : ""
+        }
+        ${isMobile ? (showHeader ? "translate-y-0" : "-translate-y-full") : ""}
+        bg-brand-primary dark:bg-neutral-800 dark:border-neutral-700
+      `}
+    >
+      {/*モバイル表示とPC表示でヘッダーの表示を切り替え*/}
       <nav className="max-w-[85rem] mx-auto flex justify-between items-center px-4 py-2 sm:px-6 lg:px-8 relative">
         {/* ロゴ */}
-        <Link
-          to={"/"}
-          className="text-2xl font-title font-bold text-white dark:text-white opacity-100 hover:opacity-80 transition-opacity duration-300"
-        >
-          てすと
-        </Link>
+        <div className="flex items-center">
+          <Link
+            to={"/"}
+            className=" opacity-100 hover:opacity-80 transition-opacity duration-300"
+          >
+            <img
+              src="/icons/zeroesu_logo.png"
+              alt="ヘッダーロゴ画像"
+              className="w-20 h-14"
+            />
+          </Link>
+          <div className="text-lg font-title font-bold text-white dark:text-white">
+            てすと
+          </div>
+        </div>
 
         {/* ハンバーガー（モバイル表示） */}
         <div className="md:hidden relative" ref={dropdownRef}>
