@@ -1,18 +1,20 @@
 //app/routes/contact._index.tsx
 import {
+  useNavigation,
   useLoaderData,
   useActionData,
   useLocation,
   Form,
   redirect,
 } from "@remix-run/react";
-import { getTagList } from "~/libs/microcms";
-import Sidebar from "~/components/Sidebar";
 import {
   MetaFunction,
   LoaderFunction,
   ActionFunction,
 } from "@remix-run/cloudflare";
+import { useEffect, useState } from "react";
+import { getTagList } from "~/libs/microcms";
+import Sidebar from "~/components/Sidebar";
 import CategoryBreadcrumb from "~/components/CategoryBreadcrumb";
 type tagList = {
   name: string;
@@ -72,9 +74,21 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export function ContactForm() {
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
+
   const location = useLocation();
   const submitted = new URLSearchParams(location.search).get("submitted");
   const actionData = useActionData<ActionErrorData>();
+
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (submitted) {
+      setShowModal(true);
+    }
+  }, [submitted]);
+
   return (
     <div className="max-w-lg mx-auto px-4 py-8">
       <h1 className="text-xl font-bold mb-4">お問い合わせ</h1>
@@ -128,13 +142,33 @@ export function ContactForm() {
         </div>
         <button
           type="submit"
-          className="bg-brand-secondary text-gray-800 font-semibold px-4 py-2 rounded hover:bg-yellow-200 duration-300"
+          disabled={isSubmitting}
+          className="bg-brand-secondary text-gray-800 font-semibold px-4 py-2 rounded hover:bg-yellow-200 duration-300 disabled:opacity-50"
         >
-          送信
+          {isSubmitting ? "送信中…" : "送信"}
         </button>
-        {submitted && (
-          <div className="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
-            送信が完了しました。お問い合わせありがとうございます。
+        {/* 送信中のオーバーレイ */}
+        {isSubmitting && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-60 z-10">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-800" />
+          </div>
+        )}
+
+        {/* 完了モーダル */}
+        {showModal && (
+          <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg p-6 max-w-sm w-full text-center">
+              <p className="text-lg mb-4">送信が完了しました。</p>
+              <button
+                onClick={() => {
+                  setShowModal(false);
+                  window.location.href = "/contact";
+                }}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                OK
+              </button>
+            </div>
           </div>
         )}
       </Form>
