@@ -82,6 +82,16 @@ export function ContactForm() {
   const actionData = useActionData<ActionErrorData>();
 
   const [showModal, setShowModal] = useState(false);
+  const [verified, setVerified] = useState(false);
+
+  useEffect(() => {
+    // グローバルコールバックを定義
+    (window as any).turnstileCallback = function (token: string) {
+      if (token) {
+        setVerified(true);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (submitted) {
@@ -140,9 +150,15 @@ export function ContactForm() {
             className="w-full border px-2 py-1 rounded"
           />
         </div>
+        {/* turnstile widget */}
+        <div
+          className="cf-turnstile"
+          data-sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+          data-callback="turnstileCallback"
+        ></div>
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={!verified || isSubmitting}
           className="bg-brand-secondary text-gray-800 font-semibold px-4 py-2 rounded hover:bg-yellow-200 duration-300 disabled:opacity-50"
         >
           {isSubmitting ? "送信中…" : "送信"}

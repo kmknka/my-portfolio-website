@@ -1,6 +1,13 @@
 //functions/api/contact.ts
 interface Env {
   CONTACTS: KVNamespace;
+  TURNSTILE_SECRET_KEY: string;
+}
+interface TurnstileResponse {
+  success: boolean;
+  "error-codes"?: string[];
+  challenge_ts?: string;
+  hostname?: string;
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
@@ -10,6 +17,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const email = formData.get("email");
   const title = formData.get("title");
   const message = formData.get("message");
+  const token = formData.get("cf-turnstile-response");
+  const remoteip = request.headers.get("CF-Connecting-IP");
 
   if (
     typeof name !== "string" ||
@@ -25,6 +34,29 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
+  }
+
+  // Turnstile トークン検証
+  const verifyRes = await fetch(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        secret: env.TURNSTILE_SECRET_KEY,
+        response: typeof token === "string" ? token : "",
+        ...(remoteip ? { remoteip } : {}),
+      }),
+    }
+  );
+
+  const verifyData = (await verifyRes.json()) as TurnstileResponse;
+
+  if (!verifyData.success) {
+    console.error("Turnstile failed:", verifyData["error-codes"]);
+    return new Response("Bot 検証失敗", { status: 403 });
   }
 
   const id = crypto.randomUUID();
