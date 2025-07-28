@@ -6,8 +6,8 @@ type tagList = {
 };
 
 export const client = createClient({
-  serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || "", // service-domain は https://XXXX.microcms.io の XXXX 部分
-  apiKey: process.env.MICROCMS_API_KEY || "",
+  serviceDomain: import.meta.env.MICROCMS_SERVICE_DOMAIN || "", // service-domain は https://XXXX.microcms.io の XXXX 部分
+  apiKey: import.meta.env.MICROCMS_API_KEY || "",
 });
 
 export const getBlogs = async (queries: MicroCMSQueries) => {
