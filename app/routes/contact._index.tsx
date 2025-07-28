@@ -151,14 +151,11 @@ export function ContactForm() {
           />
         </div>
         {/* turnstile widget */}
-        <div className="flex items-center">
-          <div
-            className="cf-turnstile"
-            data-sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-            data-size="flexible"
-            data-callback="turnstileCallback"
-          ></div>
-        </div>
+        <div
+          className="cf-turnstile"
+          data-sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+          data-callback="turnstileCallback"
+        ></div>
         <button
           type="submit"
           disabled={!verified || isSubmitting}

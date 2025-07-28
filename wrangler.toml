@@ -6,6 +6,3 @@ pages_build_output_dir = "./build/client"
 [[kv_namespaces]]
 binding = "CONTACTS"
 id = "ca77969220814d139f1fc6e8ee5ae6d9"
-
-[vars]
-TURNSTILE_SECRET_KEY ="0x4AAAAAABm1qbiDa-xddf-Tbazy_y8dLjQ"
