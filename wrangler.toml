@@ -1,3 +1,8 @@
+name = "my-portfolio-website"
+compatibility_date = "2025-07-28"
+
+pages_build_output_dir = "./build/client"
+
 [[kv_namespaces]]
 binding = "CONTACTS"
 id = "ca77969220814d139f1fc6e8ee5ae6d9"
