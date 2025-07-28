@@ -6,7 +6,7 @@ interface Env {
 
 export const action = async ({ request, context }: ActionFunctionArgs) => {
   const formData = await request.formData();
-
+  console.log("formdata:", formData);
   const name = formData.get("name");
   const email = formData.get("email");
   const title = formData.get("title");
