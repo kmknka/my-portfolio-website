@@ -156,15 +156,16 @@ export function ContactForm() {
 
         {/* 完了モーダル */}
         {showModal && (
-          <div className="fixed space-y-0 inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg p-6 max-w-sm w-full text-center">
-              <p className="text-lg mb-4">送信が完了しました。</p>
+              <p className="text-lg mb-1">送信が完了しました。</p>
+              <p className="text-lg mb-4">お問い合わせありがとうございます。</p>
               <button
                 onClick={() => {
                   setShowModal(false);
                   window.location.href = "/contact";
                 }}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="bg-brand-secondary text-gray-800 px-4 py-2 rounded hover:bg-yellow-200 duration-300"
               >
                 OK
               </button>
