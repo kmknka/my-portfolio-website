@@ -156,7 +156,7 @@ export function ContactForm() {
 
         {/* 完了モーダル */}
         {showModal && (
-          <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed space-y-0 inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg p-6 max-w-sm w-full text-center">
               <p className="text-lg mb-4">送信が完了しました。</p>
               <button
