@@ -45,7 +45,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        secret: env.TURNSTILE_SECRET_KEY,
+        secret: import.meta.env.VITE_TURNSTILE_SECRET_KEY,
         response: typeof token === "string" ? token : "",
         ...(remoteip ? { remoteip } : {}),
       }),
