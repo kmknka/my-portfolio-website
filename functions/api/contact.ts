@@ -1,10 +1,9 @@
 //functions/api/contact.ts
-import type { ActionFunctionArgs } from "@remix-run/cloudflare";
 interface Env {
   CONTACTS: KVNamespace;
 }
 
-export const action = async ({ request, context }: ActionFunctionArgs) => {
+export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const formData = await request.formData();
   console.log("formdata:", formData);
   const name = formData.get("name");
@@ -36,9 +35,8 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
     message,
     createdAt: new Date().toISOString(),
   });
-  // `context.env` に型をアサートする
-  const { CONTACTS } = context.env as Env;
-  await CONTACTS.put(id, payload);
+
+  await env.CONTACTS.put(id, payload);
 
   // ページにリダイレクト（/contact?submitted=true）
   return new Response(null, {

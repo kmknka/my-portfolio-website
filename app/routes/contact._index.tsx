@@ -4,10 +4,15 @@ import {
   useActionData,
   useLocation,
   Form,
+  redirect,
 } from "@remix-run/react";
 import { getTagList } from "~/libs/microcms";
 import Sidebar from "~/components/Sidebar";
-import { MetaFunction, LoaderFunction } from "@remix-run/cloudflare";
+import {
+  MetaFunction,
+  LoaderFunction,
+  ActionFunction,
+} from "@remix-run/cloudflare";
 import CategoryBreadcrumb from "~/components/CategoryBreadcrumb";
 type tagList = {
   name: string;
@@ -28,6 +33,44 @@ export const loader: LoaderFunction = async () => {
   return { tagList };
 };
 
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+
+  const name = formData.get("name");
+  const email = formData.get("email");
+  const title = formData.get("title");
+  const message = formData.get("message");
+
+  if (
+    typeof name !== "string" ||
+    name.trim() === "" ||
+    typeof email !== "string" ||
+    email.trim() === "" ||
+    typeof title !== "string" ||
+    title.trim() === "" ||
+    typeof message !== "string" ||
+    message.trim() === ""
+  ) {
+    return new Response(JSON.stringify({ error: "全項目を入力してください" }), {
+      status: 400,
+    });
+  }
+
+  // KV 書き込み用 API を呼び出し
+  const res = await fetch(new URL("/api/contact", request.url), {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    return new Response(JSON.stringify({ error: "送信に失敗しました" }), {
+      status: 500,
+    });
+  }
+
+  return redirect("/contact?submitted=true");
+};
+
 export function ContactForm() {
   const location = useLocation();
   const submitted = new URLSearchParams(location.search).get("submitted");
@@ -35,7 +78,7 @@ export function ContactForm() {
   return (
     <div className="max-w-lg mx-auto px-4 py-8">
       <h1 className="text-xl font-bold mb-4">お問い合わせ</h1>
-      <Form method="post" action="/api/contact" className="space-y-4">
+      <Form method="post" className="space-y-4">
         {actionData?.error && (
           <p className="text-red-600 text-sm">{actionData.error}</p>
         )}
