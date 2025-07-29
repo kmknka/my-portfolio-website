@@ -23,6 +23,7 @@ type tagList = {
 type ActionErrorData = {
   error?: string;
 };
+
 export const meta: MetaFunction = () => {
   return [
     { title: "お問い合わせ" },
@@ -83,21 +84,47 @@ export function ContactForm() {
 
   const [showModal, setShowModal] = useState(false);
   const [verified, setVerified] = useState(false);
-
-  useEffect(() => {
-    // グローバルコールバックを定義
-    (window as any).turnstileCallback = function (token: string) {
-      if (token) {
-        setVerified(true);
-      }
-    };
-  }, []);
+  const [turnstileReady, setTurnstileReady] = useState(false);
 
   useEffect(() => {
     if (submitted) {
       setShowModal(true);
     }
   }, [submitted]);
+
+  useEffect(() => {
+    // すでに読み込まれていないか確認
+    if (typeof window !== "undefined" && !window.turnstile) {
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => setTurnstileReady(true);
+      document.body.appendChild(script);
+    } else {
+      setTurnstileReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    // ウィジェットが描画可能になったときに明示的に render
+    if (
+      turnstileReady &&
+      window.turnstile &&
+      document.querySelector(".cf-turnstile")
+    ) {
+      window.turnstile.render(".cf-turnstile", {
+        sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY, // env から読むこともできます
+        callback: (token: string) => {
+          if (token) {
+            setVerified(true);
+          }
+          console.log("Turnstile token:", token);
+          // ここで `setVerified(true)` とかも可
+        },
+      });
+    }
+  }, [turnstileReady]);
 
   return (
     <div className="max-w-lg mx-auto px-4 py-8">
@@ -151,11 +178,7 @@ export function ContactForm() {
           />
         </div>
         {/* turnstile widget */}
-        <div
-          className="cf-turnstile"
-          data-sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-          data-callback="turnstileCallback"
-        ></div>
+        <div className="cf-turnstile"></div>
         <button
           type="submit"
           disabled={!verified || isSubmitting}
