@@ -4,7 +4,10 @@ type tagList = {
   name: string;
   count: number;
 };
-
+type categoryList = {
+  category?: string;
+  subcategories?: string;
+};
 export const client = createClient({
   serviceDomain: import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN || "", // service-domain は https://XXXX.microcms.io の XXXX 部分
   apiKey: import.meta.env.VITE_MICROCMS_API_KEY || "",
@@ -23,6 +26,38 @@ export const getBlogDetail = async (
     contentId: blogId,
     queries,
   });
+};
+
+export const getCategoryList = async (
+  blogId: string,
+  queries?: MicroCMSQueries
+): Promise<categoryList> => {
+  const res = await client.getListDetail({
+    endpoint: "blogs",
+    contentId: blogId,
+    queries,
+  });
+
+  const categoryListRaw: categoryList[] = [];
+
+  // カテゴリを追加（null チェックあり）
+  if (res.category?.name) {
+    categoryListRaw.push({ category: res.category.name });
+  }
+  // サブカテゴリカテゴリを追加（null チェックあり）
+  if (res.subcategories?.name) {
+    categoryListRaw.push({ subcategories: res.subcategories.name });
+  }
+
+  const categoryList = {
+    category:
+      categoryListRaw.find((item) => "category" in item)?.category ?? "",
+    subcategories:
+      categoryListRaw.find((item) => "subcategories" in item)?.subcategories ??
+      "",
+  };
+
+  return categoryList;
 };
 
 export const getTagList = async (): Promise<tagList[]> => {

@@ -24,6 +24,10 @@ const BlogPagination = ({
   tagList,
 }: Props) => {
   // console.log("BlogPagination contents:", contents);
+  const categoryList = {
+    category: "",
+    subcategories: "",
+  };
   return (
     <>
       <div className="w-full max-w-screen-lg mx-auto py-2">
@@ -32,7 +36,7 @@ const BlogPagination = ({
       </div>
       <div className="hidden md:block w-full max-w-screen-lg mx-auto py-2">
         {/* カテゴリーブレッドクラム（PC表示用 フィルターリンク下部に表示） */}
-        <CategoryBreadcrumb />
+        <CategoryBreadcrumb categoryList={categoryList} />
       </div>
       <div className="space-y-4">
         {/* 記事一覧箇所 */}
@@ -113,7 +117,7 @@ const BlogPagination = ({
 
         <div className="md:hidden w-full max-w-screen-lg mx-auto py-2">
           {/* カテゴリーブレッドクラム（モバイル表示用 ページ下部表示） */}
-          <CategoryBreadcrumb />
+          <CategoryBreadcrumb categoryList={categoryList} />
         </div>
 
         {/* ページネーションボタン */}
