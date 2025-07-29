@@ -39,7 +39,7 @@ const BlogPagination = ({
         <div className="flex flex-col space-y-4">
           {contents.map((blog) => (
             <Link
-              to={`/blogs/${blog.id}`}
+              to={`/posts/${blog.id}`}
               key={blog.id}
               className="bg-white rounded-lg shadow p-4 flex gap-4 items-start hover:shadow-lg transition-shadow duration-200"
             >

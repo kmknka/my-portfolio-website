@@ -16,6 +16,7 @@
     "@remix-run/cloudflare": "^2.16.8",
     "@remix-run/cloudflare-pages": "^2.16.8",
     "@remix-run/react": "^2.16.8",
+    "@tailwindcss/typography": "^0.5.16",
     "isbot": "^4.1.0",
     "microcms-js-sdk": "^3.2.0",
     "react": "^18.2.0",
