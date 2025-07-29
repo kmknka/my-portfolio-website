@@ -5,4 +5,4 @@ pages_build_output_dir = "./build/client"
 
 [[kv_namespaces]]
 binding = "CONTACTS"
-id = "${KV_CONTACTS_ID}"
+id = "ca77969220814d139f1fc6e8ee5ae6d9"
