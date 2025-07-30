@@ -20,7 +20,6 @@ export const loader: LoaderFunction = async ({ params }) => {
   const { id } = params;
   const categoryList = await getCategoryList(id as string);
   const tagList = await getTagList();
-  console.log("categoryList:", categoryList);
   return { tagList, categoryList };
 };
 

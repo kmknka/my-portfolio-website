@@ -16,8 +16,6 @@ export default function CategoryBreadcrumb({
 
   const pathname = location.pathname;
 
-  console.log("categoryList:", categoryList);
-
   // パスが /contact のとき
   if (pathname === "/contact") {
     return (
