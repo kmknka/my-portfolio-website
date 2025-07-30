@@ -6,6 +6,7 @@ import {
   getBlogDetail,
   mergeBlogContent,
   getCategoryList,
+  styleHtmlContent,
 } from "~/libs/microcms";
 import type { Blog } from "~/types";
 type CategoryList = {
@@ -20,8 +21,9 @@ export const loader: LoaderFunction = async ({ params }) => {
   const { id } = params;
   const blog = await getBlogDetail(id as string);
   const categoryList = await getCategoryList(id as string);
-  const fullHtml = mergeBlogContent(blog);
-  blog.content = fullHtml;
+  const rawHtml = mergeBlogContent(blog);
+  const styledHtml = styleHtmlContent(rawHtml);
+  blog.content = styledHtml;
 
   return { blog, categoryList };
 };
