@@ -119,7 +119,6 @@ export function ContactForm() {
           if (token) {
             setVerified(true);
           }
-          console.log("Turnstile token:", token);
           // ここで `setVerified(true)` とかも可
         },
       });

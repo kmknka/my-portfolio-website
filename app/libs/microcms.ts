@@ -1,13 +1,10 @@
 import { createClient, MicroCMSQueries } from "microcms-js-sdk";
 import type { Blog } from "~/types";
 import { parseDocument } from "htmlparser2";
-import { Element, Document, Node, ParentNode, Text } from "domhandler";
+import { Element, Document } from "domhandler";
 import { selectAll } from "css-select";
 import { render } from "dom-serializer";
-import { createHighlighter } from "shiki";
 import { getAttributeValue } from "domutils";
-import pkg from "he";
-const { decode } = pkg;
 
 type tagList = {
   name: string;
@@ -132,10 +129,6 @@ function isElement(node: unknown): node is Element {
   );
 }
 
-function isParentNode(node: Node): node is ParentNode {
-  return "children" in node && Array.isArray((node as ParentNode).children);
-}
-
 export async function styleHtmlContent(html: string): Promise<string> {
   const doc: Document = parseDocument(html);
 
@@ -164,46 +157,15 @@ export async function styleHtmlContent(html: string): Promise<string> {
     }
   }
 
-  const codeBlocks: Node[] = selectAll("pre > code", doc);
-  for (const code of codeBlocks) {
-    if (isElement(code)) {
-      const langMatch = code.attribs.class?.match(/language-(\w+)/);
-      const lang = langMatch?.[1] ?? "plaintext";
-      const rawCode = decode(
-        code.children.map((c) => ("data" in c ? c.data : "")).join("")
-      );
-      const highlighter = await createHighlighter({
-        themes: ["nord"],
-        langs: [lang],
-      });
-      const highlightedHtml = highlighter.codeToHtml(rawCode, {
-        lang: lang,
-        theme: "nord",
-      });
-      const highlightedDoc = parseDocument(highlightedHtml);
-      const newPre = selectAll("pre", highlightedDoc)[0];
-
-      if (isElement(newPre)) {
-        const pre = code.parent;
-        if (pre && isElement(pre) && pre.parent && isParentNode(pre.parent)) {
-          const siblings = pre.parent.children;
-          const index = siblings.indexOf(pre);
-          if (index !== -1) {
-            siblings.splice(index, 1, newPre);
-          }
-        }
-      }
-    }
-  }
-
   // グローバルスタイル（タグ毎）
   const tagStyles: Record<string, string[]> = {
     h1: [
       "font-body",
-      "bg-gray-100",
-      "text-gray-800",
-      "text-xl",
-      "rounded-none",
+      "bg-brand-primary",
+      "text-white",
+      "text-base",
+      "md:text-xl",
+      "rounded-sm",
       "px-2",
       "py-1",
     ],
@@ -213,17 +175,41 @@ export async function styleHtmlContent(html: string): Promise<string> {
       "border",
       "border-gray-400",
       "pl-4",
-      "text-xl",
+      "text-base",
+      "md:text-xl",
       "text-gray-800",
-      "rounded-none",
+      "rounded-sm",
       "px-2",
       "py-1",
     ],
-    p: ["font-body", "text-gray-800", "leading-relaxed", "mb-4"],
-    a: ["font-body", "text-blue-600", "hover:text-blue-400 duration-500"],
-    ul: ["font-body", "list-disc", "pl-5", "mb-4"],
-    li: ["font-body", "mb-1"],
+    p: [
+      "font-body",
+      "text-gray-800",
+      "leading-relaxed",
+      "mb-4",
+      "text-sm",
+      "md:text-base",
+    ],
+    a: [
+      "font-body",
+      "text-sm",
+      "md:text-base",
+      "text-blue-600",
+      "hover:text-blue-400 duration-500",
+    ],
+    ul: ["font-body", "text-sm", "md:text-base", "list-disc", "pl-5", "mb-4"],
+    li: ["font-body", "text-sm", "md:text-base", "mb-1"],
     img: ["my-4", "rounded-md", "shadow-md", "max-w-full"],
+    pre: [
+      "bg-gray-900",
+      "text-gray-300",
+      "p-4",
+      "rounded-md",
+      "overflow-x-auto",
+      "mb-2",
+      "overflow-x-auto",
+    ],
+    code: ["text-white", "text-sm", "px-1"],
     hr: ["border-t", "border-blue-950", "mx-auto", "my-6", "opacity-60"],
   };
 

@@ -27,7 +27,7 @@ export default function PostsIndex() {
   const { tagList } = useLoaderData<{ tagList: tagList[] }>();
 
   return (
-    <div className="w-full max-w-screen-lg mx-auto flex flex-row gap-6 px-4 py-6 overflow-y-auto font-body">
+    <div className="w-full max-w-screen-lg mx-auto flex flex-col md:flex-row gap-6 px-4 py-6 overflow-y-auto font-body">
       {/* ページごとのコンテンツ */}
       <div className="flex-1 font-body">
         <Outlet />

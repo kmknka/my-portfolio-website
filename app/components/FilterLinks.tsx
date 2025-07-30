@@ -33,8 +33,6 @@ export default function FilterLinks({ contents }: Props) {
     setSubcategories(Array.from(set));
   }, [categoryParam, contents]);
 
-  console.log("subcategories:", subcategories);
-
   // パスが "/" かつ category が無い場合は非表示
   if (location.pathname === "/" && !categoryParam) {
     return null;

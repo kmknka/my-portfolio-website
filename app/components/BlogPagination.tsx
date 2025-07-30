@@ -23,7 +23,6 @@ const BlogPagination = ({
   perPage = 10,
   tagList,
 }: Props) => {
-  // console.log("BlogPagination contents:", contents);
   const categoryList = {
     category: "",
     subcategories: "",
