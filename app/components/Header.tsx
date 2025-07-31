@@ -1,6 +1,6 @@
 // app/components/Header.tsx
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "@remix-run/react";
+import { Link, useLocation, useNavigate } from "@remix-run/react";
 import {
   HiMiniBolt,
   HiWrenchScrewdriver,
@@ -82,6 +82,7 @@ export default function Header() {
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
 
   // ウィンドウサイズの変更を監視してモバイル判定
   useEffect(() => {
@@ -194,7 +195,7 @@ export default function Header() {
 
           {/* ドロップダウンメニュー（オーバーレイ） */}
           {isOpen && (
-            <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 dark:bg-neutral-800 dark:border-neutral-600">
+            <div className="absolute top-full right-0 mt-2 w-80 h-auto bg-white border border-gray-200 rounded-lg shadow-lg z-50 dark:bg-neutral-800 dark:border-neutral-600">
               {tabs.map((tab) => {
                 const to =
                   tab.path ?? `/?category=${encodeURIComponent(tab.category!)}`;
@@ -204,7 +205,12 @@ export default function Header() {
                   <Link
                     key={tab.name}
                     to={to}
-                    className={`flex items-center w-full px-4 py-2 text-sm rounded ${
+                    onClick={(e) => {
+                      e.preventDefault(); // <Link> のデフォルト動作を無効にする
+                      setIsOpen(false); // メニュー閉じる
+                      navigate(to); // 明示的にルーティング遷移
+                    }}
+                    className={`flex items-center w-full px-4 py-4 text-lg rounded ${
                       isActive
                         ? "bg-gray-300 text-gray-800 pointer-events-none"
                         : "text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
