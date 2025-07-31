@@ -7,7 +7,6 @@ import {
   getBlogDetail,
   mergeBlogContent,
   getCategoryList,
-  styleHtmlContent,
 } from "~/libs/microcms";
 import type { Blog } from "~/types";
 type CategoryList = {
@@ -23,8 +22,8 @@ export const loader: LoaderFunction = async ({ params }) => {
   const blog = await getBlogDetail(id as string);
   const categoryList = await getCategoryList(id as string);
   const rawHtml = mergeBlogContent(blog);
-  const styledHtml = await styleHtmlContent(rawHtml);
-  blog.content = styledHtml;
+  // const styledHtml = await styleHtmlContent(rawHtml);
+  blog.content = rawHtml;
 
   return { blog, categoryList };
 };
@@ -70,7 +69,7 @@ export default function Post() {
           </span>
         </div>
         <div
-          className="w-full prose max-w-none px-4 text-left"
+          className="w-full prose sm:max-w-none px-4 text-left"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         />
       </div>
