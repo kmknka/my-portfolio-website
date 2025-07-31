@@ -1,19 +1,12 @@
 //app/routes/posts.tsx
 import { useLoaderData, Outlet } from "@remix-run/react";
-import { MetaFunction, LoaderFunction } from "@remix-run/cloudflare";
+import { LoaderFunction } from "@remix-run/cloudflare";
 import { getTagList, getCategoryList } from "~/libs/microcms";
 import Sidebar from "~/components/Sidebar";
 
 type tagList = {
   name: string;
   count: number;
-};
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "お問い合わせ" },
-    { name: "description", content: "お問い合わせを行うページです" },
-  ];
 };
 
 export const loader: LoaderFunction = async ({ params }) => {

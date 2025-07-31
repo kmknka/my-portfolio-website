@@ -1,5 +1,5 @@
 //app/routes/posts.$id.tsx
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import CategoryBreadcrumb from "~/components/CategoryBreadcrumb";
 import { FaClock } from "react-icons/fa";
@@ -17,6 +17,51 @@ type LoaderData = {
   blog: Blog;
   categoryList: CategoryList;
 };
+
+export const meta: MetaFunction<LoaderData> = ({ data }) => {
+  const loaderData = data as LoaderData | undefined;
+
+  if (!loaderData) return [];
+
+  const { blog } = loaderData;
+  const siteName =
+    "ゼロから社内SE | 未経験から始める業務効率化とツール活用ログ";
+  const pageUrl = `https://yourdomain.com/posts/${blog.id}`; // ←実際のURLに合わせて修正
+
+  return [
+    { title: `${blog.title} | ${siteName}` },
+    {
+      name: "description",
+      content:
+        `${blog.summary || ""} ${
+          blog.category?.name ? `|「${blog.category.name}」に関する記事` : ""
+        }` || blog.title,
+    },
+    { property: "og:title", content: blog.title },
+    {
+      property: "og:description",
+      content:
+        `${blog.summary || ""} ${
+          blog.category?.name ? `|「${blog.category.name}」に関する記事` : ""
+        }` || blog.title,
+    },
+    { property: "og:image", content: blog.eyecatch?.url || "/default-og.png" },
+    { property: "og:url", content: pageUrl },
+    { property: "og:type", content: "article" },
+    { property: "og:site_name", content: siteName },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: blog.title },
+    {
+      name: "twitter:description",
+      content:
+        `${blog.summary || ""} ${
+          blog.category?.name ? `|「${blog.category.name}」に関する記事` : ""
+        }` || blog.title,
+    },
+    { name: "twitter:image", content: blog.eyecatch?.url || "/default-og.png" },
+  ];
+};
+
 export const loader: LoaderFunction = async ({ params }) => {
   const { id } = params;
   const blog = await getBlogDetail(id as string);
