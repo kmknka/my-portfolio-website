@@ -43,7 +43,7 @@ const BlogPagination = ({
           {contents.map((blog) => (
             <div
               key={blog.id}
-              className="bg-white rounded-lg shadow p-4 flex gap-4 items-start"
+              className="bg-white border rounded-lg shadow p-4 flex gap-4 items-start"
             >
               {/* 左: アイキャッチ画像＋カテゴリ */}
               <div className="relative w-32 h-24 md:w-48 md:h-36 flex flex-col items-start">
