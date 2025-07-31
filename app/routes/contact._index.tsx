@@ -143,7 +143,7 @@ export function ContactForm() {
             type="text"
             name="name"
             required
-            className="w-full bg-white border px-2 py-1 rounded"
+            className="w-full bg-white text-gray-800 border px-2 py-1 rounded"
           />
         </div>
         <div>
@@ -157,7 +157,7 @@ export function ContactForm() {
             type="email"
             name="email"
             required
-            className="w-full bg-white border px-2 py-1 rounded"
+            className="w-full bg-white text-gray-800 border px-2 py-1 rounded"
           />
         </div>
         <div>
@@ -171,7 +171,7 @@ export function ContactForm() {
             type="text"
             name="title"
             required
-            className="w-full border bg-white px-2 py-1 rounded"
+            className="w-full border bg-white text-gray-800 px-2 py-1 rounded"
           />
         </div>
         <div>
@@ -185,7 +185,7 @@ export function ContactForm() {
             name="message"
             rows={7}
             required
-            className="w-full border bg-white px-2 py-1 rounded"
+            className="w-full border bg-white text-gray-800 px-2 py-1 rounded"
           />
         </div>
         {/* turnstile widget */}
