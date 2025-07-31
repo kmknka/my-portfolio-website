@@ -10,7 +10,7 @@ export default function Sidebar({ tagList }: SidebarProps) {
     <aside className="md:w-64 space-y-4">
       {/* 自己紹介セクション */}
       <section>
-        <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg shadow border border-gray-200 dark:border-neutral-700">
+        <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
           {/* 背景画像 */}
           <div
             className="relative h-24 bg-cover bg-center"
@@ -26,10 +26,8 @@ export default function Sidebar({ tagList }: SidebarProps) {
           <div className="text-center mt-8">
             {/* 名前と自己紹介 */}
 
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-              名前
-            </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">名前</h2>
+            <p className="text-sm text-gray-600">
               Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque
               faucibus ex sapien vitae pellentesque sem placerat. In id cursus
               mi pretium tellus duis convallis. Tempus leo eu aenean sed diam
@@ -48,7 +46,7 @@ export default function Sidebar({ tagList }: SidebarProps) {
                 className="relative group"
               >
                 <FaTwitter className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" />
-                <span className="absolute bottom-[-1.5rem] left-1/2 transform -translate-x-1/2 text-xs text-gray-500 dark:text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                <span className="absolute bottom-[-1.5rem] left-1/2 transform -translate-x-1/2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                   Twitterを開く
                 </span>
               </a>
@@ -61,7 +59,7 @@ export default function Sidebar({ tagList }: SidebarProps) {
                 className="relative group"
               >
                 <FaYoutube className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" />
-                <span className="absolute bottom-[-1.5rem] left-1/2 transform -translate-x-1/2 text-xs text-gray-500 dark:text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                <span className="absolute bottom-[-1.5rem] left-1/2 transform -translate-x-1/2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                   YouTubeを開く
                 </span>
               </a>
@@ -71,10 +69,8 @@ export default function Sidebar({ tagList }: SidebarProps) {
       </section>
       {/* 記事タグセクション */}
       <section>
-        <div className="bg-white dark:bg-neutral-800 p-4 rounded-lg shadow border border-gray-200 dark:border-neutral-700">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-            タグ一覧
-          </h2>
+        <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-800 mb-2">タグ一覧</h2>
           {/* タグリスト */}
           {tagList && tagList.length > 0 ? (
             <div className="flex flex-wrap gap-1 mt-1">
@@ -96,7 +92,7 @@ export default function Sidebar({ tagList }: SidebarProps) {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400">タグはありません</p>
+            <p className="text-gray-500">タグはありません</p>
           )}
         </div>
       </section>

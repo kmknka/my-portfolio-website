@@ -140,7 +140,7 @@ export default function Header() {
             : ""
         }
         ${isMobile ? (showHeader ? "translate-y-0" : "-translate-y-full") : ""}
-        bg-brand-primary dark:bg-neutral-800 dark:border-neutral-700
+        bg-brand-primary
       `}
     >
       {/*モバイル表示とPC表示でヘッダーの表示を切り替え*/}
@@ -157,19 +157,17 @@ export default function Header() {
               className="w-20 h-14"
             />
           </Link>
-          <div className="text-lg font-title font-bold text-white dark:text-white">
-            てすと
-          </div>
+          <div className="text-lg font-title font-bold text-white">てすと</div>
         </div>
 
         {/* ハンバーガー（モバイル表示） */}
         <div className="md:hidden relative" ref={dropdownRef}>
           <button
-            className="p-2 border bg-white dark:border-gray-600 rounded-lg"
+            className="p-2 border bg-white rounded-lg"
             onClick={() => setIsOpen(!isOpen)}
           >
             <svg
-              className="w-5 h-5 text-gray-800 dark:text-white"
+              className="w-5 h-5 text-gray-800"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -195,7 +193,7 @@ export default function Header() {
 
           {/* ドロップダウンメニュー（オーバーレイ） */}
           {isOpen && (
-            <div className="absolute top-full right-0 mt-2 w-80 h-auto bg-white border border-gray-200 rounded-lg shadow-lg z-50 dark:bg-neutral-800 dark:border-neutral-600">
+            <div className="absolute top-full right-0 mt-2 w-80 h-auto bg-white border border-gray-200 rounded-lg shadow-lg z-50">
               {tabs.map((tab) => {
                 const to =
                   tab.path ?? `/?category=${encodeURIComponent(tab.category!)}`;
@@ -213,7 +211,7 @@ export default function Header() {
                     className={`flex items-center w-full px-4 py-4 text-lg rounded ${
                       isActive
                         ? "bg-gray-300 text-gray-800 pointer-events-none"
-                        : "text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-neutral-700"
+                        : "text-gray-800 hover:bg-gray-100"
                     }`}
                     aria-current={isActive ? "page" : undefined}
                   >

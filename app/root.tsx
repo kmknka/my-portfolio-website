@@ -24,7 +24,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body className="min-h-screen">
         {/* ヘッダー */}
         <Header />
-        <div id="overlay-root" />
         {/* モバイル表示時のみ余白を追加 */}
         <div className="mt-14 md:mt-0" />
         {/* タブナビゲーション（モバイルでは非表示） */}
