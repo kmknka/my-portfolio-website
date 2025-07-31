@@ -127,53 +127,65 @@ export function ContactForm() {
 
   return (
     <div className="max-w-lg mx-auto px-4 py-8">
-      <h1 className="text-xl font-bold mb-4">お問い合わせ</h1>
+      <h1 className="text-gray-800 text-xl font-bold mb-4">お問い合わせ</h1>
       <Form method="post" className="space-y-4">
         {actionData?.error && (
           <p className="text-red-600 text-sm">{actionData.error}</p>
         )}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium">
+          <label
+            htmlFor="name"
+            className="block text-gray-800 text-sm font-medium"
+          >
             お名前
           </label>
           <input
             type="text"
             name="name"
             required
-            className="w-full border px-2 py-1 rounded"
+            className="w-full bg-white border px-2 py-1 rounded"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium">
+          <label
+            htmlFor="email"
+            className="block text-gray-800 text-sm font-medium"
+          >
             メールアドレス
           </label>
           <input
             type="email"
             name="email"
             required
-            className="w-full border px-2 py-1 rounded"
+            className="w-full bg-white border px-2 py-1 rounded"
           />
         </div>
         <div>
-          <label htmlFor="title" className="block text-sm font-medium">
+          <label
+            htmlFor="title"
+            className="block text-gray-800 text-sm font-medium"
+          >
             題名
           </label>
           <input
             type="text"
             name="title"
             required
-            className="w-full border px-2 py-1 rounded"
+            className="w-full border bg-white px-2 py-1 rounded"
           />
         </div>
         <div>
-          <label htmlFor="message" className="block text-sm font-medium">
+          <label
+            htmlFor="message"
+            className="block text-gray-800 text-sm font-medium"
+          >
             お問い合わせ内容
           </label>
           <textarea
             name="message"
             rows={7}
             required
-            className="w-full border px-2 py-1 rounded"
+            className="w-full border bg-white px-2 py-1 rounded"
           />
         </div>
         {/* turnstile widget */}
