@@ -44,7 +44,10 @@ const BlogPagination = ({
             <Link
               key={blog.id}
               to={`/posts/${blog.id}`}
-              className="bg-white border rounded-lg shadow p-4 flex gap-4 items-start"
+              className="bg-white border rounded-lg shadow p-4 flex gap-4 items-start
+              hover:shadow-lg hover:border-gray-300 hover:-translate-y-1
+              active:scale-95 active:bg-gray-100
+              transition-all duration-200 ease-in-out"
             >
               {/* 左: アイキャッチ画像＋カテゴリ */}
               <div className="relative w-32 h-24 md:w-48 md:h-36 flex flex-col items-start">
@@ -71,7 +74,7 @@ const BlogPagination = ({
               {/* 右: テキスト情報 */}
               <div className="flex-1 flex flex-col justify-between">
                 {/* タイトル */}
-                <p className="text-sm md:text-lg font-semibold text-gray-800 mb-1 break-words hover:text-gray-400 duration-300 ">
+                <p className="text-sm md:text-lg font-semibold text-gray-800 mb-1 break-words">
                   {blog.title}
                 </p>
                 <p className="text-sm text-gray-600 line-clamp-3 mb-2 px-2 min-h-[6em]">

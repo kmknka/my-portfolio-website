@@ -78,8 +78,6 @@ export default function OverlayMenu() {
   const navigate = useNavigate();
   const { isOpen, close } = useOverlay();
 
-  console.log("isOpen:", isOpen);
-
   if (!isOpen) return null;
 
   return (
