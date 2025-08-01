@@ -1,6 +1,8 @@
 // app/root.tsx
 import Header from "~/components/Header";
 import TabNavigation from "~/components/TabNavigation";
+import { OverlayProvider, useOverlay } from "~/context/OverlayContext";
+import OverlayMenu from "~/components/OverlayMenu";
 
 import {
   Links,
@@ -22,18 +24,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="min-h-screen bg-white">
-        {/* ヘッダー */}
-        <Header />
-        {/* モバイル表示時のみ余白を追加 */}
-        <div className="mt-14 md:mt-0" />
-        {/* タブナビゲーション（モバイルでは非表示） */}
-        <div className="hidden md:block bg-white font-body">
-          <TabNavigation />
-        </div>
-        {/* メインコンテンツ (記事情報及びサイドバー)*/}
-        <main>{children}</main>
-        <ScrollRestoration />
-        <Scripts />
+        <OverlayProvider>
+          {/* ヘッダー */}
+          <Header />
+          {/* モバイル表示時のみ余白を追加 */}
+          <div className="mt-14 md:mt-0" />
+          {/* タブナビゲーション（モバイルでは非表示） */}
+          <div className="hidden md:block bg-white font-body">
+            <TabNavigation />
+          </div>
+          {/* メインコンテンツ (記事情報及びサイドバー)*/}
+          <main>{children}</main>
+          {/* メニュー表示 */}
+          <OverlayMenu />
+          <ScrollRestoration />
+          <Scripts />
+        </OverlayProvider>
       </body>
     </html>
   );

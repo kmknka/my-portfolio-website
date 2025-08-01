@@ -41,8 +41,9 @@ const BlogPagination = ({
         {/* 記事一覧箇所 */}
         <div className="flex flex-col space-y-4">
           {contents.map((blog) => (
-            <div
+            <Link
               key={blog.id}
+              to={`/posts/${blog.id}`}
               className="bg-white border rounded-lg shadow p-4 flex gap-4 items-start"
             >
               {/* 左: アイキャッチ画像＋カテゴリ */}
@@ -70,12 +71,9 @@ const BlogPagination = ({
               {/* 右: テキスト情報 */}
               <div className="flex-1 flex flex-col justify-between">
                 {/* タイトル */}
-                <Link
-                  to={`/posts/${blog.id}`}
-                  className="text-sm md:text-lg font-semibold text-gray-800 mb-1 break-words hover:text-gray-400 duration-300 "
-                >
+                <p className="text-sm md:text-lg font-semibold text-gray-800 mb-1 break-words hover:text-gray-400 duration-300 ">
                   {blog.title}
-                </Link>
+                </p>
                 <p className="text-sm text-gray-600 line-clamp-3 mb-2 px-2 min-h-[6em]">
                   {blog.summary || "\u00A0"}
                 </p>
@@ -107,7 +105,7 @@ const BlogPagination = ({
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
